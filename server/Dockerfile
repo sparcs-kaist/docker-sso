@@ -83,9 +83,9 @@ RUN crontab -u sysop mycron
 RUN rm mycron
 
 # Creating archive and permission settings
-RUN mkdir -p /data/archive/{buffer,logs}
+RUN mkdir -p /data/archive/buffer /data/archive/logs
 RUN touch /data/archive/stats.txt
-RUN chown sysop:www-data /data/archive /data/archive/{buffer,stats.txt}
+RUN chown sysop:www-data /data/archive /data/archive/buffer /data/archive/stats.txt
 RUN chown sysop:sysop /data/archive/logs /data/scripts /data/scripts/update.sh
 RUN chmod 750 /backup
 RUN chmod 770 /data/archive/buffer
