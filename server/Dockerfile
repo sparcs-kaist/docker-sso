@@ -36,11 +36,16 @@ RUN echo "export LC_ALL=ko_KR.UTF-8" >> /etc/environment
 RUN wget https://dl.eff.org/certbot-auto
 RUN chmod u+x certbot-auto
 
+# Downloading AWS RDS certificates
+RUN wget https://s3.amazonaws.com/rds-downloads/rds-ca-2015-root.pem
+RUN wget https://s3.amazonaws.com/rds-downloads/rds-ca-2015-ap-northeast-2.pem
+RUN cat /rds-ca-2015-ap-northeast-2.pem /rds-ca-2015-root.pem > /rds-ca-2015.pem
+
 # Nginx configuration
 RUN sed -i -e "s/# server_tokens/server_tokens/" /etc/nginx/nginx.conf
 COPY ./dhparam.pem /etc/nginx/dhparam.pem
-COPY ./sso-test.conf /etc/nginx/sites-available/sso.conf
-COPY ./sso.conf /etc/nginx/sites-available/sso.conf
+COPY ./sso-test /etc/nginx/sites-available/sso
+COPY ./sso /etc/nginx/sites-available/sso
 
 # uWSGI configuration
 RUN pip install uwsgi
