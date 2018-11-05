@@ -90,8 +90,8 @@ RUN chown -R sysop:www-data /data/sso
 RUN chmod -R o-rwx /data/sso
 RUN echo "mkdir -p /data/archive/buffer /data/archive/logs" > /start.sh
 RUN echo "touch /data/archive/stats.txt" >> /start.sh
-RUN echo "chown -R sysop:www-data /data/archive data/sso/media" >> /start.sh
-RUN echo "chmod -R 775 /data/archive data/sso/media" >> /start.sh
+RUN echo "chown -R sysop:www-data /data/archive /data/sso/media" >> /start.sh
+RUN echo "chmod -R 775 /data/archive /data/sso/media" >> /start.sh
 RUN chmod u+x /start.sh
 
 CMD /bin/bash -c "/start.sh && service ssh start && service cron start && service uwsgi start && /bin/bash"
