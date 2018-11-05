@@ -44,7 +44,7 @@ RUN cat /rds-ca-2015-ap-northeast-2.pem /rds-ca-2015-root.pem > /rds-ca-2015.pem
 # Nginx configuration
 RUN sed -i -e "s/# server_tokens/server_tokens/" /etc/nginx/nginx.conf
 COPY ./dhparam.pem /etc/nginx/dhparam.pem
-COPY ./sso-test /etc/nginx/sites-available/sso
+COPY ./sso-test /etc/nginx/sites-available/sso-test
 COPY ./sso /etc/nginx/sites-available/sso
 
 # uWSGI configuration
@@ -57,7 +57,6 @@ RUN chmod u+x /etc/init.d/uwsgi
 # Repository cloning and pip installation
 RUN git clone https://github.com/sparcs-kaist/sparcssso.git /data/sso
 COPY ./local_settings.py /data/sso/sparcssso/local_settings.py
-COPY ./media /data/sso/media
 COPY ./letters /data/sso/letters
 WORKDIR /data/sso
 RUN pip install -r requirements.txt

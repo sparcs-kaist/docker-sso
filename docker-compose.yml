@@ -11,6 +11,7 @@ services:
       - "443:443"
       - "8022:22"
     volumes:
+      - ./server/media:/data/sso/media
       - ./logs-nginx:/var/log/nginx
       - ./logs-uwsgi:/var/log/uwsgi
       - ./archive:/data/archive
