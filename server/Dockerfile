@@ -24,6 +24,9 @@ RUN usermod -G sudo sysop
 RUN adduser --gecos "" --disabled-password wheel
 RUN usermod -G sudo wheel
 
+# Creating public key
+RUN ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ""
+
 # Locale configuration
 RUN sed -i -e 's/# ko_KR.UTF-8 UTF-8/ko_KR.UTF-8 UTF-8/' /etc/locale.gen
 RUN dpkg-reconfigure --frontend=noninteractive locales
@@ -66,6 +69,7 @@ RUN python manage.py compilemessages
 
 # Crontab installation
 RUN mkdir /data/scripts
+RUN mkdir -p /backup/script
 COPY ./scripts/update.sh /data/scripts/update.sh
 COPY ./scripts/db.sh /backup/script/db.sh
 COPY ./scripts/renewal.sh /renewal.sh
@@ -82,6 +86,7 @@ RUN crontab -u sysop mycron
 RUN rm mycron
 
 # Creating archive and permission settings
+VOLUME ["/data/archive", "/var/log/nginx", "/var/log/uwsgi", "/backup/db", "/backup/log"]
 RUN mkdir -p /data/archive/buffer /data/archive/logs
 RUN touch /data/archive/stats.txt
 RUN chown sysop:www-data /data/archive /data/archive/buffer /data/archive/stats.txt
@@ -93,4 +98,4 @@ RUN chmod 700 /data/archive/logs /data/scripts /data/scripts/update.sh
 RUN chown -R sysop:www-data /data/sso
 RUN chmod -R o-rwx /data/sso
 
-CMD /bin/bash -c "service ssh start && service cron start && service uwsgi start && /bin/bash"
+CMD /bin/bash -c "chown sysop:sysop /data/sso/media && service ssh start && service cron start && service uwsgi start && /bin/bash"
