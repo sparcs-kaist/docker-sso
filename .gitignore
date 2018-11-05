@@ -1,4 +1,7 @@
 *.sw[op]
 
-settings_local.py
+local_settings.py
 db.sh
+letters
+media
+dhparam.pem
