@@ -86,16 +86,12 @@ RUN crontab -u sysop mycron
 RUN rm mycron
 
 # Creating archive and permission settings
-VOLUME ["/data/archive", "/var/log/nginx", "/var/log/uwsgi", "/backup/db", "/backup/log"]
-RUN mkdir -p /data/archive/buffer /data/archive/logs
-RUN touch /data/archive/stats.txt
-RUN chown sysop:www-data /data/archive /data/archive/buffer /data/archive/stats.txt
-RUN chown sysop:sysop /data/archive/logs /data/scripts /data/scripts/update.sh
-RUN chmod 750 /backup
-RUN chmod 770 /data/archive/buffer
-RUN chmod 640 /data/archive/stats.txt
-RUN chmod 700 /data/archive/logs /data/scripts /data/scripts/update.sh
 RUN chown -R sysop:www-data /data/sso
 RUN chmod -R o-rwx /data/sso
+RUN echo "mkdir -p /data/archive/buffer /data/archive/logs" > /start.sh
+RUN echo "touch /data/archive/stats.txt" >> /start.sh
+RUN echo "chown -R sysop:www-data /data/archive data/sso/media" >> /start.sh
+RUN echo "chmod -R 775 /data/archive data/sso/media" >> /start.sh
+RUN chmod u+x /start.sh
 
-CMD /bin/bash -c "chown sysop:sysop /data/sso/media && service ssh start && service cron start && service uwsgi start && /bin/bash"
+CMD /bin/bash -c "/start.sh && service ssh start && service cron start && service uwsgi start && /bin/bash"

@@ -12,3 +12,8 @@ services:
       - "8022:22"
     volumes:
       - ./server/media:/data/sso/media
+      - ./archive:/data/archive
+      - ./db:/backup/db
+      - ./log-nginx:/var/log/nginx
+      - ./log-uwsgi:/var/log/uwsgi
+      - ./log-backup:/backup/log
