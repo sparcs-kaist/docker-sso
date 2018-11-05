@@ -1,0 +1,4 @@
+*.sw[op]
+
+settings_local.py
+db.sh

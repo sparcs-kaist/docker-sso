@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  sso-server:
+    container_name: sso-server
+    restart: always
+    build: ./server
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8022:22"
+    volumes:
+      - ./logs-nginx:/var/log/nginx
+      - ./logs-uwsgi:/var/log/uwsgi
+      - ./archive:/data/archive
+      - ./db:/backup/db
+      - ./log-backup:/backup/log
